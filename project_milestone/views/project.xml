@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+		<!-- Project -->
+      <record id="edit_project_milestones" model="ir.ui.view">
+            <field name="name">project.project.form</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                  <xpath expr="//header" position="inside">
+                        <button type="object" name="action_retention_reversal" string="Retention Reversal" class="oe_highlight"/>
+                  </xpath>
+            	<xpath expr="//notebook" position="inside">
+            		<page name="milestones" string="Milestones">
+            			<field name="project_milestone_ids">
+            				<tree string="milestones" editable="bottom">
+            					<field name="name"/>
+            					<field name="percentage"/>
+                                          <field name="is_billed" readonly="1"/>
+            				</tree>
+            				<form string="Milestones">
+            					<group>
+            						<group>
+            							<field name="name"/>
+            							<field name="percentage"/>
+                                                      <field name="is_billed" readonly="1"/>
+            						</group>
+            					</group>
+            				</form>
+            			</field>
+            		</page>
+            	</xpath>
+            </field>
+        </record>
+
+      <record model="ir.ui.view" id="job_cost_project_form_view_milestones">
+            <field name="name">project.inherited.form</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="odoo_job_costing_management.job_cost_project_form_view"/>
+            <field name="arch" type="xml">
+                  <xpath expr="//field[@name='fixed_price']" position="attributes">
+                        <attribute name="string">Project Value</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='qty_billing']" position="attributes">
+                        <attribute name="string">Qty Based Billing</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='retension_persentage']" position="after">
+                        <field name="prorate_advance_adjustment"/>
+                  </xpath>
+
+                  <field name="partner_id" position="after">
+                        <group string="Advance">
+                              <field name="total_billed"/>
+                              <field name="total_collected"/>
+                              <field name="total_remaining"/>
+                              <field name="total_collect_percentage"/>
+                        </group>
+
+                        <group string="Retention">
+                              <field name="account_id"/>
+                              <field name="collected_so_far"/>
+                        </group>
+                  </field>
+            </field>
+      </record>
+
+
+      <record id="view_move_form_milestone" model="ir.ui.view">
+            <field name="name">account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                  <xpath expr="//field[@name='amount_untaxed']" position="after">
+                        <field name="advance_adjustment"/>
+                        <field name="net_bill_customer"/>
+                        <field name="retention"/>
+                        
+                  </xpath>
+            </field>
+      </record>
+</odoo>
