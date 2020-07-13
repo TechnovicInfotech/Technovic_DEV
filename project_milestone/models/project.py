@@ -59,13 +59,13 @@ class AccountInvoice(models.Model):
         for move in self.filtered(lambda x: x.milestone_id):
             percentage = move.milestone_id.percentage
             invocie_amount = move.amount_total
-            if percentage:
-                sale_order = self.env['sale.order'].sudo().search([('name','=',move.invoice_origin)], limit=1)
-                if sale_order:
-                    sale_amount_total = sale_order.amount_total
-                    milestone_amount = (sale_amount_total * float(percentage))/100
-                    if invocie_amount != milestone_amount:
-                        raise UserError(_('You Can Allow only %s amount')% (milestone_amount))
+            # if percentage:
+            #     sale_order = self.env['sale.order'].sudo().search([('name','=',move.invoice_origin)], limit=1)
+            #     if sale_order:
+            #         sale_amount_total = sale_order.amount_total
+            #         milestone_amount = (sale_amount_total * float(percentage))/100
+            #         if invocie_amount != milestone_amount:
+            #             raise UserError(_('You Can Allow only %s amount')% (milestone_amount))
             move.milestone_id.write({'is_billed':True})
         res = super(AccountInvoice, self).action_post()
         return res
